@@ -25,7 +25,7 @@ const Scene = () => {
       };
 
       const deltaRotationQuaternion = new THREE.Quaternion().setFromEuler(
-        new THREE.Euler(shift.y * -0.0003, shift.x * -0.0003, 0, "XYZ")
+        new THREE.Euler(shift.y * 0.004 * -Math.PI / 180 , shift.x * 0.004 * -Math.PI / 180, 0, "XYZ")
       );
 
       geometry.quaternion.multiplyQuaternions(
