@@ -1,31 +1,30 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+
+const K = 2;
 
 const Scene = () => {
   let mount = useRef(null);
   const [three, setThreeRenderer] = useState(null);
-  const [isDragging, setDragging] = useState(false);
-  const [StartCoord, setStartCoord] = useState({startX: null, startY: null});
+  const [isDragging, setDragging] = useState(false);  
 
   const handleMouseDown = useCallback(
-    (evt) => {
-      setStartCoord({x: evt.clientX, y: evt.clientY});
+    (evt) => {      
       setDragging(true);
     },
-    [setDragging, setStartCoord]
+    [setDragging]
   );
 
   const handleMouseMove = useCallback(
     (evt) => {
-      const {geometry, renderer, scene, camera} = three;
-      const {x, y} = StartCoord;
+      const { geometry, renderer, scene, camera } = three;      
       const shift = {
-        x: x - evt.clientX,
-        y: y - evt.clientY,
+        x: evt.movementX,
+        y: evt.movementY,
       };
 
       const deltaRotationQuaternion = new THREE.Quaternion().setFromEuler(
-        new THREE.Euler(shift.y * 0.004 * -Math.PI / 180 , shift.x * 0.004 * -Math.PI / 180, 0, "XYZ")
+        new THREE.Euler(K * shift.y / 360 , K * shift.x / 360, 0, "XYZ")
       );
 
       geometry.quaternion.multiplyQuaternions(
@@ -34,7 +33,7 @@ const Scene = () => {
       );
       renderer.render(scene, camera);
     },
-    [three, StartCoord]
+    [three]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -45,23 +44,31 @@ const Scene = () => {
   useEffect(() => {
     if (three) {
       three.renderer.domElement.addEventListener("mousedown", handleMouseDown);
-      return () => three.renderer.domElement.removeEventListener("mousedown", handleMouseDown);
+      return () =>
+        three.renderer.domElement.removeEventListener(
+          "mousedown",
+          handleMouseDown
+        );
     }
   }, [three, handleMouseDown]);
 
   useEffect(() => {
     if (three && isDragging) {
       three.renderer.domElement.addEventListener("mousemove", handleMouseMove);
-      return () => three.renderer.domElement.removeEventListener("mousemove", handleMouseMove);
+      return () =>
+        three.renderer.domElement.removeEventListener(
+          "mousemove",
+          handleMouseMove
+        );
     }
   }, [three, isDragging, handleMouseMove]);
 
   useEffect(() => {
     if (three) {
       three.renderer.domElement.addEventListener("mouseup", handleMouseUp);
-      return () => three.renderer.domElement.removeEventListener("mouseup", handleMouseUp);
+      return () =>
+        three.renderer.domElement.removeEventListener("mouseup", handleMouseUp);
     }
-    
   }, [three, isDragging, handleMouseUp]);
 
   useEffect(() => {
@@ -75,23 +82,28 @@ const Scene = () => {
       );
       camera.position.set(0, 0, 5);
 
-      const renderer = new THREE.WebGLRenderer({antialias: true});
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       mount.appendChild(renderer.domElement);
 
       const geometry = new THREE.BoxGeometry(1, 1, 1);
-      const material = new THREE.MeshPhongMaterial({color: 0x00ff00});
+      const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
       const cube = new THREE.Mesh(geometry, material);
       cube.rotation.x = Math.PI / 4;
       cube.rotation.y = Math.PI / 4;
       scene.add(cube);
 
-      var light = new THREE.PointLight(0xffffff);
+
+      cube.rotation.x = Math.PI / 4;
+      cube.rotation.y = Math.PI / 4 ;
+      scene.add(cube);
+
+      var light = new THREE.PointLight(0xFFFFFF);
       light.position.set(-10, 15, 50);
       scene.add(light);
 
       renderer.render(scene, camera);
-      setThreeRenderer({renderer, geometry: cube, scene, camera});
+      setThreeRenderer({ renderer, geometry: cube, scene, camera });
     }
   }, [three, setThreeRenderer]);
 
