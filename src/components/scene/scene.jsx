@@ -98,7 +98,7 @@ const Scene = () => {
       cube.rotation.y = Math.PI / 4 ;
       scene.add(cube);
 
-      var light = new THREE.PointLight(0xFFFFFF);
+      const light = new THREE.PointLight(0xFFFFFF);
       light.position.set(-10, 15, 50);
       scene.add(light);
 
