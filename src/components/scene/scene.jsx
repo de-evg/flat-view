@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import {camera} from "../../three/camera/camera";
+import {cube} from "../../three/geometry/geometry";
+import {light} from "../../three/light/light";
 
 const K = 2;
 
@@ -74,34 +77,10 @@ const Scene = () => {
   useEffect(() => {
     if (!three) {
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
-      camera.position.set(0, 0, 5);
-
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       mount.appendChild(renderer.domElement);
-
-      const geometry = new THREE.BoxGeometry(1, 1, 1);
-      const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-      const cube = new THREE.Mesh(geometry, material);
-      cube.rotation.x = Math.PI / 4;
-      cube.rotation.y = Math.PI / 4;
-      scene.add(cube);
-
-
-      cube.rotation.x = Math.PI / 4;
-      cube.rotation.y = Math.PI / 4 ;
-      scene.add(cube);
-
-      const light = new THREE.PointLight(0xFFFFFF);
-      light.position.set(-10, 15, 50);
       scene.add(light);
-
       renderer.render(scene, camera);
       setThreeRenderer({ renderer, geometry: cube, scene, camera });
     }
