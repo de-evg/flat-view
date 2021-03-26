@@ -1,19 +1,21 @@
 import * as THREE from "three";
 
-const DEFAULT_EXT = 1;
-const DEFAULT_INNER = 0.5;
-const DEFAULT_HEIGHT = 5;
+const DEFAULT_EXT_WIDTH = 15;
+const DEFAULT_INNER_WIDTH = 14;
+const DEFAULT_EXT_DEPTH = 20;
+const DEFAULT_INNER_DEPTH = 19;
+const DEFAULT_HEIGHT = 2;
 
 const WallPoint = {
   ext: {
-    x: DEFAULT_EXT,
+    x: DEFAULT_EXT_WIDTH,
     y: DEFAULT_HEIGHT,
-    z: DEFAULT_EXT
+    z: DEFAULT_EXT_DEPTH
   },
   inner: {
-    x: DEFAULT_INNER,
+    x: DEFAULT_INNER_WIDTH,
     y: DEFAULT_HEIGHT,
-    z: DEFAULT_INNER
+    z: DEFAULT_INNER_DEPTH
   }
 };
 
@@ -213,5 +215,6 @@ geometry.setIndex([
 const material = new THREE.MeshPhongMaterial({ color: 0x88FF88 });
 
 const cube = new THREE.Mesh(geometry, material);
+cube.rotation.x = 0.5;
 
 export { cube };
