@@ -1,29 +1,21 @@
 import * as THREE from "three";
 
-// const geometry = new THREE.BoxGeometry(2, 1, 0.1);
-// const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
-// const wallLeft = new THREE.Mesh(geometry, material);
-// wallLeft.position.set(-1, 0, 0);
-// wallLeft.rotation.y = Math.PI / 2;
-// const wallRight = new THREE.Mesh(geometry, material);
-// wallRight.rotation.y = Math.PI / 2;
-// wallRight.position.set(1, 0, 0);
-// const wallFar = new THREE.Mesh(geometry, material);
-// wallFar.position.set(0, 0, -1);
+const DEFAULT_EXT = 1;
+const DEFAULT_INNER = 0.5;
+const DEFAULT_HEIGHT = 5;
 
-// const wallNear = new THREE.Mesh(geometry, material);
-// wallNear.position.set(0, 0, 1);
-// cube.rotation.x = Math.PI / 4;
-// cube.rotation.y = Math.PI / 4;
-
-// const walls = new THREE.Group();
-// walls.add(wallLeft);
-// walls.add(wallRight);
-// walls.add(wallFar);
-// walls.add(wallNear);
-// export { walls };
-
-// const MAX_POINTS = 5;
+const WallPoint = {
+  ext: {
+    x: DEFAULT_EXT,
+    y: DEFAULT_HEIGHT,
+    z: DEFAULT_EXT
+  },
+  inner: {
+    x: DEFAULT_INNER,
+    y: DEFAULT_HEIGHT,
+    z: DEFAULT_INNER
+  }
+};
 
 const getHeightData = (img) => {
   const canvas = document.createElement("canvas");
@@ -55,75 +47,122 @@ const getHeightData = (img) => {
 var heightmaploader = new THREE.ImageLoader();
 heightmaploader.load("/img/flat.png", getHeightData);
 
-// const vertices = [
-//   // front
-//   { pos: [-1, -1,  1], norm: [ 0,  0,  1],  }, // 0
-//   { pos: [ 1, -1,  1], norm: [ 0,  0,  1],  }, // 1
-//   { pos: [-1,  1,  1], norm: [ 0,  0,  1],  }, // 2
-//   { pos: [ 1,  1,  1], norm: [ 0,  0,  1],  }, // 3
-//   // right
-//   { pos: [ 1, -1,  1], norm: [ 1,  0,  0]}, // 4
-//   { pos: [ 1, -1, -1], norm: [ 1,  0,  0] }, // 5
-//   { pos: [ 1,  1,  1], norm: [ 1,  0,  0] }, // 6
-//   { pos: [ 1,  1, -1], norm: [ 1,  0,  0]}, // 7
-//   // back
-//   { pos: [ 1, -1, -1], norm: [ 0,  0, -1] }, // 8
-//   { pos: [-1, -1, -1], norm: [ 0,  0, -1] }, // 9
-//   { pos: [ 1,  1, -1], norm: [ 0,  0, -1]}, // 10
-//   { pos: [-1,  1, -1], norm: [ 0,  0, -1]}, // 11
-//   // left
-//   { pos: [-1, -1, -1], norm: [-1,  0,  0] }, // 12
-//   { pos: [-1, -1,  1], norm: [-1,  0,  0] }, // 13
-//   { pos: [-1,  1, -1], norm: [-1,  0,  0] }, // 14
-//   { pos: [-1,  1,  1], norm: [-1,  0,  0] }, // 15
-//   // top
-//   { pos: [ 1,  1, -1], norm: [ 0,  1,  0] }, // 16
-//   { pos: [-1,  1, -1], norm: [ 0,  1,  0] }, // 17
-//   { pos: [ 1,  1,  1], norm: [ 0,  1,  0] }, // 18
-//   { pos: [-1,  1,  1], norm: [ 0,  1,  0] }, // 19
-//   // bottom
-//   { pos: [ 1, -1,  1], norm: [ 0, -1,  0] }, // 20
-//   { pos: [-1, -1,  1], norm: [ 0, -1,  0] }, // 21
-//   { pos: [ 1, -1, -1], norm: [ 0, -1,  0] }, // 22
-//   { pos: [-1, -1, -1], norm: [ 0, -1,  0] }, // 23
-// ];
-
 const vertices = [
+  //front wall
   //front
-  { pos: [-1, -1, 1], norm: [0, 0, 1] }, //vert: 0, index: 0
-  { pos: [1, -1, 1], norm: [0, 0, 1] }, //vert: 1, index: 1
-  { pos: [-1, 1, 1], norm: [0, 0, 1] }, //vert: 2, index: 2  
-  { pos: [1, 1, 1], norm: [0, 0, 1] }, //vert: 3, index: 3 
-  
+  { pos: [-WallPoint.ext.x, -WallPoint.ext.y, WallPoint.ext.z], norm: [0, 0, 4] }, //vert: 0, index: 0
+  { pos: [WallPoint.ext.x, -WallPoint.ext.y, WallPoint.ext.z], norm: [0, 0, 4] }, //vert: 1, index: 1
+  { pos: [-WallPoint.ext.x, WallPoint.ext.y, WallPoint.ext.z], norm: [0, 0, 4] }, //vert: 2, index: 2  
+  { pos: [WallPoint.ext.x, WallPoint.ext.y, WallPoint.ext.z], norm: [0, 0, 4] }, //vert: 3, index: 3 
   //back
-  { pos: [1, -1, -1], norm: [0, 0, -1] }, //vert: 4, index: 4
-  { pos: [-1, -1, -1], norm: [0, 0, -1] }, //vert: 5, index: 5
-  { pos: [-1, 1, -1], norm: [0, 0, -1] }, //vert: 6, index: 6
-  { pos: [1, 1, -1], norm: [0, 0, -1] }, //vert: 7, index: 7
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [0, 0, 3.5] }, //vert: 4, index: 4
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [0, 0, 3.5] }, //vert: 5, index: 5
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, WallPoint.inner.z], norm: [0, 0, 3.5] }, //vert: 6, index: 6  
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, WallPoint.inner.z], norm: [0, 0, 3.5] }, //vert: 7, index: 7  
 
-  //left
-  { pos: [-1, -1, -1], norm: [-1, 0, 0] }, //vert: 5, index: 8
-  { pos: [-1, -1, 1], norm: [-1, 0, 0] }, //vert: 0, index: 9
-  { pos: [-1, 1, 1], norm: [-1, 0, 0] }, //vert: 3, index: 10  
-  { pos: [1, 1, -1], norm: [-1, 0, 0] }, //vert: 7, index: 11
+  //left wall
+  //front
+  { pos: [-WallPoint.ext.x, -WallPoint.ext.y, -WallPoint.ext.z], norm: [-4, 0, 0] }, //vert: 8, index: 8
+  { pos: [-WallPoint.ext.x, -WallPoint.ext.y, WallPoint.ext.z], norm: [-4, 0, 0] }, //vert: 9, index: 9
+  { pos: [-WallPoint.ext.x, WallPoint.ext.y, WallPoint.ext.z], norm: [-4, 0, 0] }, //vert: 10, index: 10  
+  { pos: [-WallPoint.ext.x, WallPoint.ext.y, -WallPoint.ext.z], norm: [-4, 0, 0] }, //vert: 11, index: 11
+
+  //back
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [-3.5, 0, 0] }, //vert: 12, index: 12
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [-3.5, 0, 0] }, //vert: 13, index: 13 
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, WallPoint.inner.z], norm: [-3.5, 0, 0] }, //vert: 14, index: 14  
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [-3.5, 0, 0] }, //vert: 15, index: 15
+
+  //back wall
+  //front
+  { pos: [WallPoint.ext.x, -WallPoint.ext.y, -WallPoint.ext.z], norm: [0, 0, -4] }, //vert: 16, index: 16
+  { pos: [-WallPoint.ext.x, -WallPoint.ext.y, -WallPoint.ext.z], norm: [0, 0, -4] }, //vert: 17, index: 17
+  { pos: [-WallPoint.ext.x, WallPoint.ext.y, -WallPoint.ext.z], norm: [0, 0, -4] }, //vert: 18, index: 18
+  { pos: [WallPoint.ext.x, WallPoint.ext.y, -WallPoint.ext.z], norm: [0, 0, -4] }, //vert: 19, index: 19
+
+  //back
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 0, -3.5] }, //vert: 20, index: 20
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 0, -3.5] }, //vert: 21, index: 21
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 0, -3.5] }, //vert: 22, index: 22
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 0, -3.5] }, //vert: 23, index: 23
   
-  //right
-  { pos: [1, -1, 1], norm: [1, 0, 0] }, //vert: 1, index: 12
-  { pos: [1, -1, -1], norm: [1, 0, 0] }, //vert: 4, index: 13
-  { pos: [1, 1, 1], norm: [1, 0, 0] }, //vert: 3, index: 14  
-  { pos: [-1, 1, -1], norm: [1, 0, 0] }, //vert: 6, index: 15  
+  //right wall
+  //front
+  { pos: [WallPoint.ext.x, -WallPoint.ext.y, -WallPoint.ext.z], norm: [4, 0, 0] }, //vert: 24, index: 24
+  { pos: [WallPoint.ext.x, -WallPoint.ext.y, WallPoint.ext.z], norm: [4, 0, 0] }, //vert: 25, index: 25
+  { pos: [WallPoint.ext.x, WallPoint.ext.y, WallPoint.ext.z], norm: [4, 0, 0] }, //vert: 26, index: 26  
+  { pos: [WallPoint.ext.x, WallPoint.ext.y, -WallPoint.ext.z], norm: [4, 0, 0] }, //vert: 27, index: 27
 
-  //top
-  { pos: [-1, 1, 1], norm: [0, 1, 0] }, //vert: 2, index: 16  
-  { pos: [1, 1, 1], norm: [0, 1, 0] }, //vert: 3, index: 17 
-  { pos: [1, 1, -1], norm: [0, 1, 0] }, //vert: 7, index: 18
-  { pos: [-1, 1, -1], norm: [0, 1, 0] }, //vert: 6, index: 19
+  //back
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [3.5, 0, 0] }, //vert: 28, index: 28
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [3.5, 0, 0] }, //vert: 29, index: 29
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, WallPoint.inner.z], norm: [3.5, 0, 0] }, //vert: 30, index: 30 
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [3.5, 0, 0] }, //vert: 31, index: 31
 
-  //bottom
-  { pos: [-1, -1, -1], norm: [0, -1, 0] }, //vert: 5, index: 20
-  { pos: [1, -1, -1], norm: [0, -1, 0] }, //vert: 4, index: 21
-  { pos: [-1, -1, 1], norm: [0, -1, 0] }, //vert: 0, index: 22
-  { pos: [1, -1, 1], norm: [0, -1, 0] }, //vert: 1, index: 23
+  //top-front
+  { pos: [-WallPoint.ext.x, WallPoint.inner.y, WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 0, index: 32
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 1, index: 33
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 2, index: 34  
+  { pos: [WallPoint.ext.x, WallPoint.inner.y, WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 3, index: 35
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 4, index: 36
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 5, index: 37
+
+  //bottom-front
+  { pos: [-WallPoint.ext.x, -WallPoint.inner.y, WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 0, index: 38
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 1, index: 39
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 2, index: 40  
+  { pos: [WallPoint.ext.x, -WallPoint.inner.y, WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 3, index: 41
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 4, index: 42
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 5, index: 43
+
+  //top-back
+  { pos: [-WallPoint.ext.x, WallPoint.inner.y, -WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 0, index: 44
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 1, index: 45
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 2, index: 46  
+  { pos: [WallPoint.ext.x, WallPoint.inner.y, -WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 3, index: 47
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, -WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 4, index: 48
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, -WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 5, index: 49
+  
+  //bottom-back
+  { pos: [-WallPoint.ext.x, -WallPoint.inner.y, -WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 0, index: 50
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 1, index: 51
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 2, index: 52  
+  { pos: [WallPoint.ext.x, -WallPoint.inner.y, -WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 3, index: 53
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 4, index: 54
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 5, index: 55
+
+  //top-left
+  { pos: [-WallPoint.ext.x, WallPoint.inner.y, WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 0, index: 56
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 1, index: 57
+  { pos: [-WallPoint.inner.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 2, index: 58  
+  { pos: [-WallPoint.ext.x, WallPoint.inner.y, -WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 3, index: 59
+  { pos: [-WallPoint.ext.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 4, index: 60
+  { pos: [-WallPoint.ext.x, WallPoint.inner.y, WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 5, index: 61
+   
+  //bottom-left
+  { pos: [-WallPoint.ext.x, -WallPoint.inner.y, WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 0, index: 62
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 1, index: 63
+  { pos: [-WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 2, index: 64  
+  { pos: [-WallPoint.ext.x, -WallPoint.inner.y, -WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 3, index: 65
+  { pos: [-WallPoint.ext.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 4, index: 66
+  { pos: [-WallPoint.ext.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 5, index: 67
+
+  //top-right
+  { pos: [WallPoint.ext.x, WallPoint.inner.y, WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 0, index: 68
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 1, index: 69
+  { pos: [WallPoint.inner.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 2, index: 70  
+  { pos: [WallPoint.ext.x, WallPoint.inner.y, -WallPoint.ext.z], norm: [0, 1, 0] }, //vert: 3, index: 71
+  { pos: [WallPoint.ext.x, WallPoint.inner.y, -WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 4, index: 72
+  { pos: [WallPoint.ext.x, WallPoint.inner.y, WallPoint.inner.z], norm: [0, 1, 0] }, //vert: 5, index: 73
+   
+  //bottom-right
+  { pos: [WallPoint.ext.x, -WallPoint.inner.y, WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 0, index: 74
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 1, index: 75
+  { pos: [WallPoint.inner.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 2, index: 76  
+  { pos: [WallPoint.ext.x, -WallPoint.inner.y, -WallPoint.ext.z], norm: [0, -1, 0] }, //vert: 3, index: 77
+  { pos: [WallPoint.ext.x, -WallPoint.inner.y, -WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 4, index: 78
+  { pos: [WallPoint.ext.x, -WallPoint.inner.y, WallPoint.inner.z], norm: [0, -1, 0] }, //vert: 5, index: 79
+
 ];
 
 const numVertices = vertices.length;
@@ -147,21 +186,29 @@ geometry.setAttribute("normal", new THREE.BufferAttribute(normals, normalNumComp
 
 geometry.setIndex([
  0, 1, 2,  2, 1, 3,
- 4, 5, 6,  6, 5, 7,
- 8, 9, 10,  10, 9, 11,
- 12, 13, 14,  14, 13, 15,
- 16, 17, 18,  18, 17, 19,
- 20, 21, 22,  22, 21, 23
-]);
+ 6, 5, 4,  7, 5, 6,
 
-// geometry.setIndex([
-//   0,  1,  2,   2,  1,  3,  // front
-//   4,  5,  6,   6,  5,  7,  // right
-//   8,  9, 10,  10,  9, 11,  // back
-//  12, 13, 14,  14, 13, 15,  // left
-//  16, 17, 18,  18, 17, 19,  // top
-//  20, 21, 22,  22, 21, 23,  // bottom
-// ]);
+ 8, 9, 10,  10, 11, 8,
+ 14, 13, 12,  12, 15, 14,
+
+ 17, 19, 16,  18, 19, 17,
+ 22, 21, 20,  23, 22, 20,
+
+ 26, 25, 24,  24, 27, 26,
+ 28, 29, 30,  30, 31, 28,
+
+ 32, 37, 33,  33, 37, 36,  33, 36, 34,  34, 36, 35,
+ 38, 39, 43,  39, 40, 43,  40, 42, 43,  40, 41, 42,
+
+ 45, 49, 44,  48, 49, 45,  46, 48, 45,  47, 48, 46,
+ 55, 51, 50,  55, 52, 51,  55, 54, 52,  54, 53, 52,
+
+ 56, 57, 61,  57, 58, 61,  58, 60, 61,  58, 59, 60,
+ 66, 63, 62,  67, 64, 63,  67, 66, 64,  66, 65, 64,
+ 
+ 72, 69, 68,  73, 70, 69,  73, 72, 70,  72, 71, 70,
+ 74, 75, 78,  75, 76, 79,  76, 78, 79,  76, 77, 78,
+]);
 
 const material = new THREE.MeshPhongMaterial({ color: 0x88FF88 });
 
