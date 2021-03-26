@@ -80,6 +80,8 @@ const Scene = () => {
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       mount.appendChild(renderer.domElement);
+
+      scene.add(cube);      
       scene.add(light);
       renderer.render(scene, camera);
       setThreeRenderer({ renderer, geometry: cube, scene, camera });
