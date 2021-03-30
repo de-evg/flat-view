@@ -204,4 +204,39 @@ const DEFAULT_HEIGHT = 2;
     return wall;
 };
 
-export { generateWall };
+const generateFloor = (coords) => {
+  const vertices = coords.map((coord) => ({ pos: [coord.x, coord.y, coord.z], norm: [0, 0, 0] }));
+  const numVertices = vertices.length;
+    const positionNumComponents = 3;
+    const normalNumComponents = 3;
+    const positions = new Float32Array(numVertices * positionNumComponents);
+    const normals = new Float32Array(numVertices * normalNumComponents);
+    let posNdx = 0;
+    let nrmNdx = 0;
+
+    for (const vertex of vertices) {
+      positions.set(vertex.pos, posNdx);
+      normals.set(vertex.norm, nrmNdx);
+      posNdx += positionNumComponents;
+      nrmNdx += normalNumComponents;
+    }
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute("position", new THREE.BufferAttribute(positions, positionNumComponents));
+    geometry.setAttribute("normal", new THREE.BufferAttribute(normals, normalNumComponents));
+
+    geometry.setIndex([
+      0, 1, 2,  2, 3, 0,
+      2, 4, 5, 5, 3, 2,
+      6, 7, 8,  8, 9, 6,
+      8, 10, 11, 11, 12, 8,
+      9, 12, 11
+    ]);
+      
+    const material = new THREE.MeshPhongMaterial({ color: 0x88FF88 });
+    const floor = new THREE.Mesh(geometry, material);
+
+    return floor;
+};
+
+export { generateWall, generateFloor };
