@@ -88,15 +88,20 @@ const Scene = () => {
       extWallLeft.position.y = DEFAULT_Y_POSITION;
       extWallLeft.position.z = 33;
       
-      const extWallTop1 = generateWall(197, DEFAULT_HEIGHT, 18);
-      extWallTop1.position.x = -92;
+      const extWallTop1 = generateWall(35, DEFAULT_HEIGHT, 18);
+      extWallTop1.position.x = -175;
       extWallTop1.position.y = DEFAULT_Y_POSITION;
       extWallTop1.position.z = -128;
 
-      const extWallTop2 = generateWall(222, DEFAULT_HEIGHT, 18);
-      extWallTop2.position.x = 100;
+      const extWallTop2 = generateWall(125, DEFAULT_HEIGHT, 18);
+      extWallTop2.position.x = -55;
       extWallTop2.position.y = DEFAULT_Y_POSITION;
-      extWallTop2.position.z = -145;
+      extWallTop2.position.z = -128;
+
+      const extWallTop3 = generateWall(222, DEFAULT_HEIGHT, 18);
+      extWallTop3.position.x = 100;
+      extWallTop3.position.y = DEFAULT_Y_POSITION;
+      extWallTop3.position.z = -145;
       
       const extWallRight = generateWall(18, DEFAULT_HEIGHT, 358);
       extWallRight.position.x = 218;
@@ -113,10 +118,37 @@ const Scene = () => {
       extWallBottom2.position.y = DEFAULT_Y_POSITION;
       extWallBottom2.position.z = 201;
 
+      const extWallThin1 = generateWall(4, DEFAULT_HEIGHT, 23);
+      extWallThin1.position.x = -3;
+      extWallThin1.position.y = DEFAULT_Y_POSITION;
+      extWallThin1.position.z = -163;
+
+      const extWallThin2 = generateWall(4, DEFAULT_HEIGHT, 92);
+      extWallThin2.position.x = -45;
+      extWallThin2.position.y = DEFAULT_Y_POSITION;
+      extWallThin2.position.z = -188;
+      extWallThin2.rotation.y = 1.23;
+
+      const extWallThin3 = generateWall(140, DEFAULT_HEIGHT, 4);
+      extWallThin3.position.x = -158;
+      extWallThin3.position.y = DEFAULT_Y_POSITION;
+      extWallThin3.position.z = -203;
+
+      const extWallThin4 = generateWall(4, DEFAULT_HEIGHT, 70);
+      extWallThin4.position.x = -227;
+      extWallThin4.position.y = DEFAULT_Y_POSITION;
+      extWallThin4.position.z = -170;
+
+      const extWallThin5 = generateWall(26, DEFAULT_HEIGHT, 4);
+      extWallThin5.position.x = -216;
+      extWallThin5.position.y = DEFAULT_Y_POSITION;
+      extWallThin5.position.z = -135;
+      
+
       const innerWallMiddle1 = generateWall(9, DEFAULT_HEIGHT, 209);
       innerWallMiddle1.position.x = 10;
       innerWallMiddle1.position.y = DEFAULT_Y_POSITION;
-      innerWallMiddle1.position.z = -40;
+      innerWallMiddle1.position.z = -40;      
 
       const innerWallMiddle2 = generateWall(9, DEFAULT_HEIGHT, 70);
       innerWallMiddle2.position.x = 10;
@@ -143,21 +175,42 @@ const Scene = () => {
       innerWallThin4.position.y = DEFAULT_Y_POSITION;
       innerWallThin4.position.z = 89;
 
+      const innerWallThin5 = generateWall(16, DEFAULT_HEIGHT, 4);
+      innerWallThin5.position.x = 77;
+      innerWallThin5.position.y = DEFAULT_Y_POSITION;
+      innerWallThin5.position.z = 16;
+
+      const innerWallThin6 = generateWall(16, DEFAULT_HEIGHT, 4);
+      innerWallThin6.position.x = 22;
+      innerWallThin6.position.y = DEFAULT_Y_POSITION;
+      innerWallThin6.position.z = 16;
+
       const group = new THREE.Group();
       generateFlatTemplate(group);
 
       group.add(extWallLeft);
       group.add(extWallTop1);
       group.add(extWallTop2);
+      group.add(extWallTop3);
       group.add(extWallRight);
       group.add(extWallBottom1);
       group.add(extWallBottom2);
+
+      group.add(extWallThin1);
+      group.add(extWallThin2);
+      group.add(extWallThin3);
+      group.add(extWallThin4);
+      group.add(extWallThin5);
+
       group.add(innerWallMiddle1);
       group.add(innerWallMiddle2);
+
       group.add(innerWallThin1);
       group.add(innerWallThin2);
       group.add(innerWallThin3);
       group.add(innerWallThin4);
+      group.add(innerWallThin5);
+      group.add(innerWallThin6);
       
 
       scene.add(group);
