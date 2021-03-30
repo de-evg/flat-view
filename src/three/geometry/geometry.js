@@ -199,7 +199,7 @@ const DEFAULT_HEIGHT = 2;
 
   const generateWall = (width, height, depth) => {
     const geometry = new THREE.BoxGeometry( width, height, depth );
-    const material = new THREE.MeshPhongMaterial( {color: 0x88FF88} );
+    const material = new THREE.MeshPhongMaterial( {color: 0xAAAAAA} );
     const wall = new THREE.Mesh( geometry, material );
     return wall;
 };
