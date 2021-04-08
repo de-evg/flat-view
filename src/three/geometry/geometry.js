@@ -43,7 +43,6 @@ const generateFloor = (coords) => {
       14, 13, 12,  12, 15, 14,
 
       16, 17, 18,  18, 17, 16,
-
     ]);
       
     const material = new THREE.MeshPhongMaterial({ color: 0x88FF88 });
