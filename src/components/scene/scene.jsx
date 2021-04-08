@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { camera } from "../../three/camera/camera";
 import { generateFlatTemplate } from "../../three/flat-template/flat-template";
-import { generateWall } from "../../three/geometry/geometry";
+import { generateWall, generateFloor } from "../../three/geometry/geometry";
 import { light } from "../../three/light/light";
 
 const K = 2;
@@ -87,7 +87,7 @@ const Scene = () => {
       extWallLeft.position.x = -197;
       extWallLeft.position.y = DEFAULT_Y_POSITION;
       extWallLeft.position.z = 33;
-      
+
       const extWallTop1 = generateWall(35, DEFAULT_HEIGHT, 18);
       extWallTop1.position.x = -175;
       extWallTop1.position.y = DEFAULT_Y_POSITION;
@@ -102,7 +102,7 @@ const Scene = () => {
       extWallTop3.position.x = 100;
       extWallTop3.position.y = DEFAULT_Y_POSITION;
       extWallTop3.position.z = -145;
-      
+
       const extWallRight = generateWall(18, DEFAULT_HEIGHT, 358);
       extWallRight.position.x = 218;
       extWallRight.position.y = DEFAULT_Y_POSITION;
@@ -143,12 +143,11 @@ const Scene = () => {
       extWallThin5.position.x = -216;
       extWallThin5.position.y = DEFAULT_Y_POSITION;
       extWallThin5.position.z = -135;
-      
 
       const innerWallMiddle1 = generateWall(9, DEFAULT_HEIGHT, 209);
       innerWallMiddle1.position.x = 10;
       innerWallMiddle1.position.y = DEFAULT_Y_POSITION;
-      innerWallMiddle1.position.z = -40;      
+      innerWallMiddle1.position.z = -40;
 
       const innerWallMiddle2 = generateWall(9, DEFAULT_HEIGHT, 70);
       innerWallMiddle2.position.x = 10;
@@ -184,9 +183,35 @@ const Scene = () => {
       innerWallThin6.position.x = 22;
       innerWallThin6.position.y = DEFAULT_Y_POSITION;
       innerWallThin6.position.z = 16;
+const FLOOR_LEVEL = -1;
+      const floor = generateFloor([
+        { pos: [-205, FLOOR_LEVEL, -133], norm: [0, 10, 0] }, //0
+        { pos: [-205, FLOOR_LEVEL, 200], norm: [0, 10, 0] }, //1
+        { pos: [10, FLOOR_LEVEL, -133], norm: [0, 10, 0] }, //2
+        { pos: [10, FLOOR_LEVEL, 200], norm: [0, 10, 0] }, //3
+        
+        { pos: [10, FLOOR_LEVEL, -140], norm: [0, 10, 0] }, //4
+        { pos: [218, FLOOR_LEVEL, -140], norm: [0, 10, 0] }, //5
+        { pos: [218, FLOOR_LEVEL, 200], norm: [0, 10, 0] }, //6
+        { pos: [10, FLOOR_LEVEL, 200], norm: [0, 10, 0] }, //7
+
+        { pos: [-228, FLOOR_LEVEL, -205], norm: [0, 10, 0] }, //8
+        { pos: [-228, FLOOR_LEVEL, -133], norm: [0, 10, 0] }, //9
+        { pos: [-85, FLOOR_LEVEL, -205], norm: [0, 10, 0] }, //10
+        { pos: [-85, FLOOR_LEVEL, -133], norm: [0, 10, 0] }, //11
+
+        { pos: [-85, FLOOR_LEVEL, -172], norm: [0, 10, 0] }, //12
+        { pos: [0, FLOOR_LEVEL, -172], norm: [0, 10, 0] }, //13
+        { pos: [0, FLOOR_LEVEL, -133], norm: [0, 10, 0] }, //14
+        { pos: [-85, FLOOR_LEVEL, -133], norm: [0, 10, 0] }, //15
+
+        { pos: [-85, FLOOR_LEVEL, -205], norm: [0, 10, 0] }, //16
+        { pos: [0, FLOOR_LEVEL, -172], norm: [0, 10, 0] }, //17
+        { pos: [-85, FLOOR_LEVEL, -172], norm: [0, 10, 0] }, //18
+        
+      ]);
 
       const group = new THREE.Group();
-      // generateFlatTemplate(group);
 
       group.add(extWallLeft);
       group.add(extWallTop1);
@@ -211,7 +236,8 @@ const Scene = () => {
       group.add(innerWallThin4);
       group.add(innerWallThin5);
       group.add(innerWallThin6);
-      
+
+      group.add(floor);
 
       scene.add(group);
       scene.add(light);
